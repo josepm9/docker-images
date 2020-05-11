@@ -120,3 +120,6 @@ HEALTHCHECK --interval=1m --start-period=5m \
 
 # Define default command to start Oracle Database. 
 CMD exec $ORACLE_BASE/$RUN_FILE
+
+# Configure a default database inside the image
+RUN $ORACLE_BASE/$RUN_FILE prebuild
