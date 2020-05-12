@@ -186,7 +186,8 @@ fi;
 
 # Check whether database is up and running
 $ORACLE_BASE/$CHECK_DB_FILE
-if [ $? -eq 0 ]; then
+res=$?
+if [ $res -eq 0 ]; then
   echo "#########################"
   echo "DATABASE IS READY TO USE!"
   echo "#########################"
@@ -203,7 +204,12 @@ else
   echo "#####################################"
 fi;
 
-echo "The following output is now a tail of the alert.log:"
-tail -f $ORACLE_BASE/diag/rdbms/*/*/trace/alert*.log &
-childPID=$!
-wait $childPID
+if [[ "$1" == "prebuild" ]]; then
+  echo "Prebuild ended with status $res"
+  exit $res
+else
+  echo "The following output is now a tail of the alert.log:"
+  tail -f $ORACLE_BASE/diag/rdbms/*/*/trace/alert*.log &
+  childPID=$!
+  wait $childPID
+fi
